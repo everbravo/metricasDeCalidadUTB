@@ -12,11 +12,11 @@ import static org.junit.Assert.assertTrue;
 public class RegisterTests extends BaseTest {
 
     private final RegisterDomain registerDomain = RegisterDomain.builder()
-            .name("Ever")
+            .name("Juanito")
             .email(CommonFunctions.generateRandomEmail())
             .cellPhone(CommonFunctions.generateCellPhone())
             .documentNumber(CommonFunctions.generateDocNumber())
-            .lastName("Bravo")
+            .lastName("Perez")
             .build();
 
     private final String URL_SITE = "https://www.mesfix.com/users/signup";
