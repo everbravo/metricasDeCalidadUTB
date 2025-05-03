@@ -13,20 +13,21 @@ public class RegisterTests extends BaseTest {
 
     private final RegisterDomain registerDomain = RegisterDomain.builder()
             .name("Ever")
-            .email("bijiwi2308@benznoi.com") //uso https://temp-mail.org/es/
+            .email(CommonFunctions.generateRandomEmail())
             .cellPhone(CommonFunctions.generateCellPhone())
-            .documentNumber(CommonFunctions.genDocNumber())
+            .documentNumber(CommonFunctions.generateDocNumber())
             .lastName("Bravo")
             .build();
 
     private final String URL_SITE = "https://www.mesfix.com/users/signup";
 
     @Test
-    public void CP04_registerWithoutAcceptTermsAndConditions() throws Exception {
+    public void CP04_registerWithoutAcceptTermsAndConditions() {
         driver.get(URL_SITE);
         RegisterPage reg = new RegisterPage(driver);
         reg.completeForm(registerDomain);
         reg.sendForm();
+
         assertTrue(reg.isCaptchaErrorToastVisible());
     }
 
@@ -39,5 +40,29 @@ public class RegisterTests extends BaseTest {
         reg.sendForm();
 
         assertFalse(reg.isCaptchaErrorToastVisible());
+    }
+
+    @Test
+    public void CP02_invalidEmail() {
+        driver.get(URL_SITE);
+        RegisterPage reg = new RegisterPage(driver);
+        reg.completeForm(registerDomain.toBuilder()
+                .email(registerDomain.getEmail().replace("@", ""))
+                .build());
+        reg.sendForm();
+
+        assertTrue(reg.isInvalidEmailErrorToastVisible());
+    }
+
+    @Test
+    public void CP03_invalidPassword() throws Exception {
+        driver.get(URL_SITE);
+        RegisterPage reg = new RegisterPage(driver);
+        reg.completeForm(registerDomain);
+        reg.resolveCaptcha();
+        reg.sendForm();
+        reg.completePasswordForm("password12+"); // condiciones correctas: 8 carácteres, una mayúscula, un número y un carácter especial.
+
+        assertTrue(reg.isPasswordFormInvalid());
     }
 }

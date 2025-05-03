@@ -1,5 +1,7 @@
 package com.utb.metrics.common;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 public class CommonFunctions {
 
     public static String generateCellPhone() {
@@ -11,7 +13,7 @@ public class CommonFunctions {
         return cellPhone.toString();
     }
 
-    public static String genDocNumber() {
+    public static String generateDocNumber() {
         StringBuilder document = new StringBuilder();
         int firstDigit = (int) (Math.random() * 9) + 1;
         document.append(firstDigit);
@@ -22,6 +24,11 @@ public class CommonFunctions {
         document.append(lastDigit);
 
         return document.toString();
+    }
+
+    public static String generateRandomEmail() {
+        String local = RandomStringUtils.randomAlphanumeric(10).toLowerCase();
+        return local + "@mailinator.com";
     }
 
 }
