@@ -7,20 +7,13 @@ import java.io.InputStreamReader;
 public class GoogleAdmin {
 
     public static void initChrome() throws IOException {
-
-        ProcessBuilder pb = new ProcessBuilder(
-                "powershell",
-                "-command",
-                "(Get-ItemProperty 'HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\chrome.exe').'(default)'"
-        );
-        Process process = pb.start();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String chromePath = reader.readLine();
+        String os = System.getProperty("os.name").toLowerCase();
+        String chromePath = getChromePath(os);
 
         ProcessBuilder builder = new ProcessBuilder(
                 chromePath,
                 "--remote-debugging-port=9222",
-                "--user-data-dir=C:\\chrome-dev-profile",
+                "--user-data-dir=" + (os.contains("win") ? "C:\\chrome-dev-profile" : "/tmp/chrome-dev-profile"),
                 "--start-maximized"
         );
 
@@ -29,6 +22,23 @@ public class GoogleAdmin {
             Thread.sleep(3000);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static String getChromePath(String os) throws IOException {
+        if (os.contains("win")) {
+            ProcessBuilder pb = new ProcessBuilder(
+                    "powershell",
+                    "-command",
+                    "(Get-ItemProperty 'HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\chrome.exe').'(default)'"
+            );
+            Process process = pb.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            return reader.readLine();
+        } else if (os.contains("mac")) {
+            return "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+        } else {
+            throw new RuntimeException("Unsupported OS: " + os);
         }
     }
 
