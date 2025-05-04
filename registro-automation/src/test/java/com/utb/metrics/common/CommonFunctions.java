@@ -1,8 +1,13 @@
 package com.utb.metrics.common;
 
+import net.datafaker.Faker;
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.util.Locale;
+
 public class CommonFunctions {
+
+    private static final Faker faker = new Faker(new Locale("es"));
 
     public static String generateCellPhone() {
         StringBuilder cellPhone = new StringBuilder("3");
@@ -29,6 +34,30 @@ public class CommonFunctions {
     public static String generateRandomEmail() {
         String local = RandomStringUtils.randomAlphanumeric(10).toLowerCase();
         return local + "@mailinator.com";
+    }
+
+    public static String generateRandomCompanyName() {
+        return faker.company().name();
+    }
+
+    public static String generateRandomFullName() {
+        return faker.name().fullName();
+    }
+
+    public static String generateRandomName() {
+        return faker.name().name();
+    }
+
+    public static String generateRandomLastName() {
+        return faker.name().lastName();
+    }
+
+    public static String generateRandomPassword() {
+        return faker.internet().password(8, 16, true, true);
+    }
+
+    public static String generateRandomPhone() {
+        return faker.phoneNumber().phoneNumberNational();
     }
 
 }

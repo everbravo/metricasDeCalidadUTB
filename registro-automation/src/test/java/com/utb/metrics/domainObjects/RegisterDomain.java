@@ -6,9 +6,15 @@ import lombok.Data;
 @Data
 @Builder(toBuilder = true)
 public class RegisterDomain {
+
     private String documentNumber;
     private String name;
     private String lastName;
     private String cellPhone;
     private String email;
+    private String companyName;
+    private String legalAgent;
+    private String password;
+    private String phoneNumber;
+
 }
