@@ -23,6 +23,12 @@ El principal objetivo de este proyecto es optimizar el proceso de pruebas funcio
 - **OkHttp**: Librería para realizar peticiones HTTP.
 - **Data Faker**: Generación de datos falsos para pruebas.
 
+## Aviso Importante
+
+Debido al uso de automatización en la resolución del **reCAPTCHA**, le solicitamos amablemente su espera. El proceso no debería tardar más de un minuto en completarse. 
+**No es necesaria la intervención manual**, ya que cualquier acción manual podría interferir con el resultado de la prueba.
+Agradecemos su comprensión y paciencia.
+
 ## Proceso de Implementación
 
 El proceso de automatización siguió las siguientes etapas:
