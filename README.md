@@ -29,6 +29,15 @@ Debido al uso de automatización en la resolución del **reCAPTCHA**, le solicit
 **No es necesaria la intervención manual**, ya que cualquier acción manual podría interferir con el resultado de la prueba.
 Agradecemos su comprensión y paciencia.
 
+## ADVERTENCA
+
+Es **importante** que los tests sean ejecutados de forma **individual** debido al comportamiento reactivo del sitio web *Mesfix*. Este comportamiento hace que sea difícil controlar de manera precisa la interacción con los elementos de la página (botones, checkboxes, radio buttons, etc.), ya que pueden presentar variabilidad en su estado y respuesta. 
+Además, **la velocidad de carga del sitio** puede influir significativamente en los resultados de las pruebas. Dependiendo de factores como la conectividad o el tiempo de respuesta del servidor, es posible que se generen errores o se añada "ruido" en los resultados, lo que puede afectar la fiabilidad de las pruebas.
+Es también fundamental ser **paciente** durante la **resolución dinámica del reCAPTCHA**. Este proceso puede tardar hasta un minuto y **no es necesaria la intervención manual**. Cualquier intento de intervención manual podría alterar el flujo de la prueba y afectar su validez.
+Finalmente, es importante tener en cuenta que los casos de prueba fueron aplicados sobre un **sitio web existente** sobre el cual no tenemos control, lo que puede contribuir a comportamientos imprevistos durante la ejecución de las pruebas.
+
+Agradecemos su comprensión y paciencia en todo el proceso.
+
 ## Proceso de Implementación
 
 El proceso de automatización siguió las siguientes etapas:
