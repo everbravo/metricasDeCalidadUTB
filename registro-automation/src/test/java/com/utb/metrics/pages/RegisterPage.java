@@ -168,7 +168,7 @@ public class RegisterPage {
 
     private void clickRegisterFormLegalPersonIntention() {
         List<WebElement> radioButtons = driver.findElements(By.name("intention"));
-        radioButtons.getFirst().click();
+        radioButtons.get(0).click();
     }
 
     public void clickSendButton() {
