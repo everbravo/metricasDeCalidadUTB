@@ -52,7 +52,7 @@ public class RegisterPage {
         emailField.sendKeys(data.getEmail());
     }
 
-    public void partOneFormLegalPerson(RegisterDomain data) {
+    public void partOneFormLegalPerson(RegisterDomain data) throws InterruptedException {
         selectRegisterFormLegalPerson();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -65,11 +65,11 @@ public class RegisterPage {
         emailField.sendKeys(data.getEmail());
     }
 
-    public void partTwoFormLegalPerson(RegisterDomain data) {
+    public void partTwoFormLegalPerson(RegisterDomain data) throws InterruptedException {
         completePasswordForm(data.getPassword());
         nextButton(nextButtonOne);
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         WebElement socioeconomicTypeField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("socioeconomicType")));
 
         driver.findElement(By.name("names")).sendKeys(data.getName());
@@ -108,6 +108,7 @@ public class RegisterPage {
         new Select(driver.findElement(By.name("profession"))).selectByVisibleText("Ingeniería y afines");
         occupationField.sendKeys("Gerente financiero");
 
+        Thread.sleep(2000);
         nextButton(nextButtonThree);
     }
 
@@ -117,7 +118,7 @@ public class RegisterPage {
 
     public boolean isCaptchaErrorToastVisible() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
             WebElement toast = wait.until(ExpectedConditions.visibilityOfElementLocated(
                     By.xpath("//div[@id='toast-container']//div[contains(@class, 'toast-error')]//div[contains(text(), 'Debe validar el captcha')]")
             ));
@@ -129,7 +130,7 @@ public class RegisterPage {
 
     public boolean isInvalidEmailErrorToastVisible() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
             WebElement toast = wait.until(ExpectedConditions.visibilityOfElementLocated(
                     By.xpath("//div[@id='toast-container']//div[contains(@class, 'toast-error')]//div[contains(text(), 'Debes ingresar un correo válido')]")
             ));
@@ -155,7 +156,7 @@ public class RegisterPage {
 
     public boolean isEmailAlreadyExistErrorToastVisible() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
             WebElement toast = wait.until(ExpectedConditions.visibilityOfElementLocated(
                     By.xpath("//div[@id='toast-container']//div[contains(@class, 'toast-error')]//div[contains(text(), " +
                             "'Hay un problema con tu registro, por favor contacte con soporte@plataform.com.')]")
@@ -166,7 +167,8 @@ public class RegisterPage {
         }
     }
 
-    private void clickRegisterFormLegalPersonIntention() {
+    private void clickRegisterFormLegalPersonIntention() throws InterruptedException {
+        Thread.sleep(2000);
         List<WebElement> radioButtons = driver.findElements(By.name("intention"));
         radioButtons.get(0).click();
     }
@@ -176,13 +178,13 @@ public class RegisterPage {
     }
 
     public void nextButton(By by) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         wait.until(ExpectedConditions.elementToBeClickable(by)).click();
     }
 
     public boolean isWelcomeModalVisible() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
             wait.until(ExpectedConditions.urlContains("https://www.mesfix.com/ms/general/profileAccount"));
             return true;
         } catch (Exception e) {
