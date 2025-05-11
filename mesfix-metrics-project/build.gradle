@@ -3,6 +3,7 @@ plugins {
     id 'jacoco'
     id 'org.springframework.boot' version '2.7.10'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id "org.sonarqube" version "3.5.0.2730"
 }
 
 group = 'com.example'
@@ -41,6 +42,14 @@ jacocoTestReport {
                     ])
                 })
         )
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "mesfix"
+        property "sonar.host.url",   "http://localhost:9000"
+        property "sonar.login",      "squ_81817e3ac457b69acd184c5cfe1dea47fa8fd889"
     }
 }
 

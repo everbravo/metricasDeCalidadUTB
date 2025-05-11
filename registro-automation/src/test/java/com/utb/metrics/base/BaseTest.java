@@ -10,7 +10,9 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import java.io.IOException;
 
 public class BaseTest {
+
     protected static WebDriver driver;
+    private ScreenshotUtil screenshotUtil;
 
     @BeforeClass
     public static void setUp() throws IOException {
