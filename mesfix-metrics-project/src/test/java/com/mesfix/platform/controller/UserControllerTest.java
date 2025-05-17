@@ -1,6 +1,8 @@
 package com.mesfix.platform.controller;
 
 import com.mesfix.platform.domain.User;
+import com.mesfix.platform.domain.dto.UserDto;
+import com.mesfix.platform.domain.translate.UserMapper;
 import com.mesfix.platform.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +21,11 @@ class UserControllerTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private UserMapper userMapper;
+
     private User testUser;
+    private UserDto testUserDto;
 
     @BeforeEach
     void setUp() {
@@ -30,24 +36,31 @@ class UserControllerTest {
         testUser.setEmail("test@example.com");
         testUser.setFullName("Test User");
         testUser.setPhone("1234567890");
+
+        testUserDto = new UserDto();
+        testUserDto.setUsername("testuser");
+        testUserDto.setPassword("123456");
+        testUserDto.setEmail("test@example.com");
+        testUserDto.setFullName("Test User");
+        testUserDto.setPhone("1234567890");
     }
 
     @Test
     void testRegister_UserDoesNotExist_ReturnsCreated() {
         when(userRepository.findByUsername("testuser")).thenReturn(null);
-
-        ResponseEntity<User> response = userController.register(testUser);
+        when(userMapper.toEntity(testUserDto)).thenReturn(testUser);
+        ResponseEntity<UserDto> response = userController.register(testUserDto);
 
         verify(userRepository).save(testUser);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(testUser, response.getBody());
+        assertEquals(testUserDto, response.getBody());
     }
 
     @Test
     void testRegister_UserAlreadyExists_ReturnsConflict() {
         when(userRepository.findByUsername("testuser")).thenReturn(testUser);
-
-        ResponseEntity<User> response = userController.register(testUser);
+        when(userMapper.toEntity(testUserDto)).thenReturn(testUser);
+        ResponseEntity<UserDto> response = userController.register(testUserDto);
 
         verify(userRepository, never()).save(any());
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
@@ -57,22 +70,22 @@ class UserControllerTest {
     @Test
     void testLogin_Successful_ReturnsOk() {
         when(userRepository.findByUsername("testuser")).thenReturn(testUser);
-
-        ResponseEntity<User> response = userController.login(testUser);
+        when(userMapper.toDto(testUser)).thenReturn(testUserDto);
+        ResponseEntity<UserDto> response = userController.login(testUserDto);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(testUser, response.getBody());
+        assertEquals(testUserDto, response.getBody());
     }
 
     @Test
     void testLogin_InvalidPassword_ReturnsUnauthorized() {
-        User wrongPasswordUser = new User();
+        UserDto wrongPasswordUser = new UserDto();
         wrongPasswordUser.setUsername("testuser");
         wrongPasswordUser.setPassword("wrong");
 
         when(userRepository.findByUsername("testuser")).thenReturn(testUser);
-
-        ResponseEntity<User> response = userController.login(wrongPasswordUser);
+        when(userMapper.toEntity(testUserDto)).thenReturn(testUser);
+        ResponseEntity<UserDto> response = userController.login(wrongPasswordUser);
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
         assertNull(response.getBody());
@@ -81,8 +94,8 @@ class UserControllerTest {
     @Test
     void testLogin_UserNotFound_ReturnsUnauthorized() {
         when(userRepository.findByUsername("testuser")).thenReturn(null);
-
-        ResponseEntity<User> response = userController.login(testUser);
+        when(userMapper.toEntity(testUserDto)).thenReturn(testUser);
+        ResponseEntity<UserDto> response = userController.login(testUserDto);
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
         assertNull(response.getBody());
@@ -91,8 +104,8 @@ class UserControllerTest {
     @Test
     void testDeleteUser_UserExists_ReturnsOk() {
         when(userRepository.findByUsername("testuser")).thenReturn(testUser);
-
-        ResponseEntity<Void> response = userController.deleteUser(testUser);
+        when(userMapper.toEntity(testUserDto)).thenReturn(testUser);
+        ResponseEntity<Void> response = userController.deleteUser(testUserDto);
 
         verify(userRepository).delete(testUser);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -101,8 +114,8 @@ class UserControllerTest {
     @Test
     void testDeleteUser_UserNotFound_ReturnsNotFound() {
         when(userRepository.findByUsername("testuser")).thenReturn(null);
-
-        ResponseEntity<Void> response = userController.deleteUser(testUser);
+        when(userMapper.toEntity(testUserDto)).thenReturn(testUser);
+        ResponseEntity<Void> response = userController.deleteUser(testUserDto);
 
         verify(userRepository, never()).delete(any());
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
