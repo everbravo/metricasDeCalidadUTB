@@ -53,7 +53,7 @@ sonarqube {
     properties {
         property "sonar.projectKey", "mesfix"
         property "sonar.host.url",   "http://localhost:9000"
-        property "sonar.login",      "squ_81817e3ac457b69acd184c5cfe1dea47fa8fd889"
+        property "sonar.login",      System.getenv('SONAR_TOKEN')
     }
 }
 
